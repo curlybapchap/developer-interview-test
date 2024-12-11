@@ -21,6 +21,6 @@ public class PaymentServiceTests
         var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Amount = 1, Percentage = 10, };
         var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10.50m, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
         var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
-        Assert.True(result.Success == false, "Rebate service with default values does not return false");
+        Assert.True(result.Success == true, "Rebate service for product with FixedRateRebate returns true");
     }
 }
