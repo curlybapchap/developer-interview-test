@@ -25,10 +25,40 @@ public class PaymentServiceTests
     }
 
     [Fact]
+    public void FixedRateRebateNonSupportedIncentiveUnsuccessful()
+    {
+        var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Percentage = 10, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10m, SupportedIncentives = SupportedIncentiveType.AmountPerUom, Uom = "kg" };
+        var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
+        Assert.True(result.Success == false, "Product with unsupported incentive returns successful rebate");
+    }
+
+    [Fact]
+    public void FixedRateRebateWithZeroVolumeUnsuccessful()
+    {
+        var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 0, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Percentage = 10, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10m, SupportedIncentives = SupportedIncentiveType.AmountPerUom, Uom = "kg" };
+        var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
+        Assert.True(result.Success == false, "Product with zero volume returns successful rebate");
+    }
+
+    [Fact]
+    public void FixedRateRebateWithZeroPriceUnsuccessful()
+    {
+        var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Percentage = 10, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 0, SupportedIncentives = SupportedIncentiveType.AmountPerUom, Uom = "kg" };
+        var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
+        Assert.True(result.Success == false, "Product with zero price returns successful rebate");
+    }
+
+    [Fact]
     public void FixedRateRebateCalculatorReturnsCorrectRebateAmount()
     {
         var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
-        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate,  Percentage = 10, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Percentage = 10, };
         var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
         var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
         Assert.True(result.RebateAmount == 500, $"FixedRateRebate returned {result.RebateAmount}, expected 525");
