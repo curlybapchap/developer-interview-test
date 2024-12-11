@@ -7,32 +7,9 @@ public class RebateService : IRebateService
 {
     public CalculateRebateResult Calculate(CalculateRebateRequest request)
     {
-        var result = new CalculateRebateResult();
-
-        //var rebateAmount = 0m;
-
-        IIncentiveType calculator;
-
-        switch (rebate.Incentive)
-        {
-            case IncentiveType.FixedCashAmount:
-                calculator = new FixedCashAmount();
-                calculator.CalculateRebate(rebate, product, request);
-                result = calculator.rebateResult;
-                break;
-
-            case IncentiveType.FixedRateRebate:
-                calculator = new FixedRateRebate();
-                calculator.CalculateRebate(rebate, product, request);
-                result = calculator.rebateResult;
-                break;
-
-            case IncentiveType.AmountPerUom:
-                calculator = new AmountPerUom();
-                calculator.CalculateRebate(rebate, product, request);
-                result = calculator.rebateResult;
-                break;
-        }
+        IRebateCalculator calculator = rebate.RebateCalculator;
+        calculator.CalculateRebate(rebate, product, request);
+        var result = calculator.rebateResult;
 
         if (result.Success)
         {
