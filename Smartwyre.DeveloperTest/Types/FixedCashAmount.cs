@@ -6,23 +6,22 @@ public class FixedCashAmount : IIncentiveType
     {
         if (rebate == null)
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else if (!product.SupportedIncentives.HasFlag(SupportedIncentiveType.FixedCashAmount))
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else if (rebate.Amount == 0)
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else
         {
-            rebateAmount = rebate.Amount;
-            success = true;
+            rebateResult.RebateAmount = rebate.Amount;
+            rebateResult.Success = true;
         }
     }
 
-    public bool success { get; set; } = false;
-    public decimal rebateAmount { get; set; } = 0.0m;
+    public CalculateRebateResult rebateResult { get; set; } = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
 }

@@ -6,27 +6,26 @@ public class FixedRateRebate : IIncentiveType
     {
         if (rebate == null)
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else if (product == null)
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else if (!product.SupportedIncentives.HasFlag(SupportedIncentiveType.FixedRateRebate))
         {
-            //success = false;
+            rebateResult.Success = false;
         }
         else if (rebate.Percentage == 0 || product.Price == 0 || request.Volume == 0)
         {
-            success = false;
+            rebateResult.Success = false;
         }
         else
         {
-            rebateAmount += product.Price * rebate.Percentage * request.Volume;
-            success = true;
+            rebateResult.RebateAmount += product.Price * rebate.Percentage * request.Volume;
+            rebateResult.Success = true;
         }
     }
 
-    public bool success { get; set; } = false;
-    public decimal rebateAmount { get; set; } = 0.0m;
+    public CalculateRebateResult rebateResult { get; set; } = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
 }
