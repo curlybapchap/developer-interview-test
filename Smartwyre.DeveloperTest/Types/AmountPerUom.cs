@@ -2,8 +2,9 @@ namespace Smartwyre.DeveloperTest.Types;
 
 public class AmountPerUom : IRebateCalculator
 {
-    public void CalculateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
+    public CalculateRebateResult CalculateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
     {
+        CalculateRebateResult rebateResult = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
         if (rebate == null)
         {
             rebateResult.Success = false;
@@ -25,7 +26,6 @@ public class AmountPerUom : IRebateCalculator
             rebateResult.RebateAmount += rebate.Amount * request.Volume;
             rebateResult.Success = true;
         }
+        return rebateResult;
     }
-
-    public CalculateRebateResult rebateResult { get; set; } = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
 }

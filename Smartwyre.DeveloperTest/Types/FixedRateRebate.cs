@@ -2,8 +2,9 @@ namespace Smartwyre.DeveloperTest.Types;
 
 public class FixedRateRebate : IRebateCalculator
 {
-    public void CalculateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
+    public CalculateRebateResult CalculateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
     {
+        CalculateRebateResult rebateResult = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
         if (rebate == null)
         {
             rebateResult.Success = false;
@@ -25,7 +26,7 @@ public class FixedRateRebate : IRebateCalculator
             rebateResult.RebateAmount += product.Price * rebate.Percentage * request.Volume;
             rebateResult.Success = true;
         }
-    }
 
-    public CalculateRebateResult rebateResult { get; set; } = new CalculateRebateResult() { Success = false, RebateAmount = 0 };
+        return rebateResult;
+    }
 }

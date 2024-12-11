@@ -8,8 +8,7 @@ public class RebateService : IRebateService
     public CalculateRebateResult Calculate(CalculateRebateRequest request)
     {
         IRebateCalculator calculator = rebate.RebateCalculator;
-        calculator.CalculateRebate(rebate, product, request);
-        var result = calculator.rebateResult;
+        var result = calculator.CalculateRebate(rebate, product, request);
 
         if (result.Success)
         {
