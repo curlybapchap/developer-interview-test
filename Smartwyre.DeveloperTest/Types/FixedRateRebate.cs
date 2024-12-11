@@ -1,6 +1,6 @@
 namespace Smartwyre.DeveloperTest.Types;
 
-public class FixedRateRebate : IIncentiveType
+public class FixedRateRebate : IRebateCalculator
 {
     public void CalculateRebate(Rebate rebate, Product product, CalculateRebateRequest request)
     {
