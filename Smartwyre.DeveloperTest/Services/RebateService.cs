@@ -7,9 +7,6 @@ public class RebateService : IRebateService
 {
     public CalculateRebateResult Calculate(CalculateRebateRequest request)
     {
-        Rebate rebate = rebateDataStore.GetRebate(request.RebateIdentifier);
-        Product product = productDataStore.GetProduct(request.ProductIdentifier);
-
         var result = new CalculateRebateResult();
 
         var rebateAmount = 0m;
@@ -97,12 +94,26 @@ public class RebateService : IRebateService
 
     public RebateService() { }
 
-    public RebateService(RebateDataStore rebateDataStore, ProductDataStore productDataStore)
+    public RebateService(RebateDataStore rebateDataStore, ProductDataStore productDataStore, CalculateRebateRequest request)
     {
         this.rebateDataStore = rebateDataStore;
         this.productDataStore = productDataStore;
+        this.request = request;
+
+        rebate = rebateDataStore.GetRebate(request.RebateIdentifier);
+        product = productDataStore.GetProduct(request.ProductIdentifier);
+    }
+
+    public RebateService(Rebate rebate, Product product, CalculateRebateRequest request)
+    {
+        this.rebate = rebate;
+        this.product = product;
+        this.request = request;
     }
 
     private RebateDataStore rebateDataStore;
     private ProductDataStore productDataStore;
+    private Rebate rebate;
+    private Product product;
+    private CalculateRebateRequest request;
 }
