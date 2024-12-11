@@ -7,9 +7,6 @@ public class RebateService : IRebateService
 {
     public CalculateRebateResult Calculate(CalculateRebateRequest request)
     {
-        var rebateDataStore = new RebateDataStore();
-        var productDataStore = new ProductDataStore();
-
         Rebate rebate = rebateDataStore.GetRebate(request.RebateIdentifier);
         Product product = productDataStore.GetProduct(request.ProductIdentifier);
 
@@ -96,4 +93,16 @@ public class RebateService : IRebateService
 
         return result;
     }
+
+
+    public RebateService() { }
+
+    public RebateService(RebateDataStore rebateDataStore, ProductDataStore productDataStore)
+    {
+        this.rebateDataStore = rebateDataStore;
+        this.productDataStore = productDataStore;
+    }
+
+    private RebateDataStore rebateDataStore;
+    private ProductDataStore productDataStore;
 }
