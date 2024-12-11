@@ -18,8 +18,8 @@ public class PaymentServiceTests
     public void FixedRateRebateReturnsSuccess()
     {
         var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
-        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Amount = 1, Percentage = 10, };
-        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10.50m, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Percentage = 10, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10m, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
         var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
         Assert.True(result.Success == true, "Rebate service for product with FixedRateRebate returns true");
     }
@@ -28,9 +28,29 @@ public class PaymentServiceTests
     public void FixedRateRebateCalculatorReturnsCorrectRebateAmount()
     {
         var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
-        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate, Amount = 1, Percentage = 10, };
-        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10.50m, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedRateRebate,  Percentage = 10, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10, SupportedIncentives = SupportedIncentiveType.FixedRateRebate, Uom = "kg" };
         var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
-        Assert.True(result.RebateAmount == 525, "Rebate service for product with FixedRateRebate returns true");
+        Assert.True(result.RebateAmount == 500, $"FixedRateRebate returned {result.RebateAmount}, expected 525");
+    }
+
+    [Fact]
+    public void AmountPerUomCalculatorReturnsCorrectRebateAmount()
+    {
+        var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.AmountPerUom, Amount = 20, };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10, SupportedIncentives = SupportedIncentiveType.AmountPerUom, Uom = "kg" };
+        var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
+        Assert.True(result.RebateAmount == 100, $"AmountPerUom Rebate returned {result.RebateAmount}, expected 525");
+    }
+
+    [Fact]
+    public void FixedCashAmountCalculatorReturnsCorrectRebateAmount()
+    {
+        var rbtReq = new CalculateRebateRequest() { ProductIdentifier = "PrdA", RebateIdentifier = "Rbt1", Volume = 5, };
+        var rbt = new Rebate() { Identifier = "Rbt1", Incentive = IncentiveType.FixedCashAmount, Amount = 33 };
+        var prd = new Product() { Id = 1, Identifier = "PrdA", Price = 10, SupportedIncentives = SupportedIncentiveType.FixedCashAmount, Uom = "kg" };
+        var result = new RebateService(rbt, prd, rbtReq).Calculate(rbtReq);
+        Assert.True(result.RebateAmount == 33, $"FixedCashAmount Rebate returned {result.RebateAmount}, expected 525");
     }
 }
