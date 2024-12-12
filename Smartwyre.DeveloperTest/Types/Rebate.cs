@@ -24,7 +24,7 @@ public class Rebate
                     rebateCalculator = new AmountPerUom();
                     break;
                 default:
-                    rebateCalculator = new FixedCashAmount();
+                    rebateCalculator = new DefaultZeroRebate();
                     break;
             }
             return rebateCalculator;
