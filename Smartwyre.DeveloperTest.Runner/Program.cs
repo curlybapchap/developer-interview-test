@@ -30,7 +30,7 @@ class Program
         if (!Decimal.TryParse(userInput, out decimal amount))
             Console.WriteLine($"Amount must be a decimal value");
 
-        Console.Write("Select incentive type: 0. Fixed Rate Rebate 1. Amount per UOM 2. Fixed Cash Amount");
+        Console.Write("Select incentive type: \r\n 0. Fixed Rate Rebate \r\n 1. Amount per UOM \r\n 2. Fixed Cash Amount \r\n ");
         userInput = Console.ReadLine();
 
         IncentiveType incentiveType = IncentiveType.DefaultZeroRebate;
@@ -43,7 +43,7 @@ class Program
             Console.WriteLine("Please start again and select 0, 1 or 2'. Default zero rebate applied for now.");
         }
 
-        Console.Write("Select product supported incentive type: 1. Fixed Rate Rebate 2. Amount per UOM 3. Fixed Cash Amount");
+        Console.Write("Select product supported incentive type: \r\n 1. Fixed Rate Rebate \r\n 2. Amount per UOM \r\n 4. Fixed Cash Amount \r\n ");
         userInput = Console.ReadLine();
 
         SupportedIncentiveType suppIncentiveType = SupportedIncentiveType.AmountPerUom;
@@ -62,6 +62,7 @@ class Program
         new CalculateRebateRequest()).Calculate(rbtReq);
 
         Console.Write($"Rebate calculation with successful?  {result.Success}");
+        Console.WriteLine();
         Console.Write($"Rebate amount = {result.RebateAmount}");
     }
 }
